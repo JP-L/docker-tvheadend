@@ -12,12 +12,12 @@ ARG USR="hts"
 ARG GROUP="video"
 ARG HOME="/home/${USR}"
 
-VOLUME ${HOME}/config ${HOME}/epg ${HOME}/recordings
+VOLUME /config /epg /recordings
 
 # Add sysctl due to network issue on synology docker
 ADD config/sysctl.conf /etc/sysctl.conf
 # Add sysctl due to network issue on synology docker
-ADD config/superuser ${HOME}/superuser
+#ADD config/superuser /tmp/superuser
 # Add etc/init.d/tvheadend replacement due to no udev
 ADD config/tvheadend /tmp/tvheadend
 
@@ -33,9 +33,6 @@ RUN \
     libsdl1.2-dev \
     libargtable2-0 \
     locales \
-    rsyslog \
-    lsb-base \
-    lsb-release \
   	psmisc \
   	wget \
   	cron \
@@ -49,10 +46,12 @@ RUN \
   	xmltv-util \
   	dvb-apps \
   	tvheadend && \
-  echo "**** add IPv6 support to Tvheadend ****" && \
-  sed -i "s/^TVH_IPV6=0/TVH_IPV6=1/" /etc/default/tvheadend && \
+  #echo "**** add IPv6 support to Tvheadend ****" && \
+  #sed -i "s/^TVH_IPV6=0/TVH_IPV6=1/" /etc/default/tvheadend && \
   echo "**** change Tvheadend config path to ${HOME}/config ****" && \
-  sed -i "s/^TVH_CONF_DIR=\"\"/TVH_CONF_DIR=\"\/home\/hts\/config\"/" /etc/default/tvheadend && \
+  sed -i "s/^TVH_CONF_DIR=\"\"/TVH_CONF_DIR=\"\/config\"/" /etc/default/tvheadend && \
+  echo "**** change Tvheadend logging to /var/log/tvheadend ****" && \
+  sed -i "s/^TVH_ARGS=\"\"/TVH_ARGS=\"-l \/var\/log\/tvheadend.log\"/" /etc/default/tvheadend && \
   echo "**** Download the tv_grab file for wg++ and save it as /usr/bin/tv_grab_wg++ ****" && \
   wget -O /usr/bin/tv_grab_wg++ http://www.webgrabplus.com/sites/default/files/tv_grab_wg.txt && \
   echo "**** Set xmltv guide location in tv_grab_wg++ file to /epg ****" && \
@@ -68,19 +67,20 @@ RUN \
 	--sysconfdir=${HOME}/config/comskip && \
 	make && \
 	make install && \
-	echo "**** allow user to read/write from/to /recordings ****" && \
-  chown -R ${USR}:${GROUP} ${HOME}/recordings && \
-  echo "**** allow user to read/write from/to /config ****" && \
-  chown -R ${USR}:${GROUP} ${HOME}/config && \
-  echo "**** allow user to read/write from/to /epg ****" && \
-  chown -R ${USR}:${GROUP} ${HOME}/epg && \
-  echo "**** set superuser for tvheadend for inital login ****" && \
-  mkdir -p ${HOME}/.hts/tvheadend && \
-  mv /${HOME}/superuser ${HOME}/.hts/tvheadend/ && \
-  chown -R ${USR}:${GROUP} ${HOME}/.hts/ && \
-  echo "**** replace /etc/init.d/tvheadend" && \
+	echo "**** add hts user to group video and users ****" && \
+	usermod -a -G users hts && usermod -a -G video hts && \
+  #echo "**** set superuser for tvheadend for inital login ****" && \
+  #mkdir -p ${HOME}/.hts/tvheadend && \
+  #mv /tmp/superuser ${HOME}/.hts/tvheadend/ && \
+  #chown -R ${USR}:${GROUP} ${HOME}/.hts/ && \
+  echo "**** replace /etc/init.d/tvheadend ****" && \
   mv /tmp/tvheadend /etc/init.d/tvheadend && \
   chmod 755 /etc/init.d/tvheadend && \
+  echo "**** create log file if this not exists ****" && \
+  [ ! -f /var/log/tvheadend.log ] && touch /var/log/tvheadend.log && \
+  chmod 666 /var/log/tvheadend.log && \
+  echo "**** set localtime to Amsterdam time ****" && \
+  cp /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime && \
   echo "**** cleanup for root ****" && \
   rm -rf \
 		/tmp/* \
@@ -90,4 +90,4 @@ RUN \
 # Expose ports
 EXPOSE 9981 9982
 # Run the command on container startup
-CMD /etc/init.d/tvheadend start && tail -f /var/log/syslog
+CMD /etc/init.d/tvheadend start && tail -f /var/log/tvheadend.log
