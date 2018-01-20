@@ -1,6 +1,22 @@
 FROM debian:buster
 MAINTAINER JP Limpens <jpmw.limpens@jp-l.org>
 
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="Tvheadend in a container" \
+      org.label-schema.description="Tvheadend in a container" \
+      org.label-schema.url="e.g. https://www.example.com/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/JP-L/docker-tvheadend" \
+      org.label-schema.vendor="JP-L" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.schema-version="1.0"
+
+# The locale
+ARG TZ="Europe/Amsterdam"
 # Tvheadend package version
 ARG TVHEADEND_VER="stable-4.2"
 # Tvheadend package distribution
@@ -62,8 +78,8 @@ RUN \
 	cd /tmp/comskip && \
 	./autogen.sh && \
 	./configure \
-	--bindir=/usr/bin \
-	--sysconfdir=/config/comskip && \
+	  --bindir=/usr/bin \
+	  --sysconfdir=/config/comskip && \
 	make && \
 	make install && \
 	echo "**** add hts user to group video and users ****" && \
@@ -75,7 +91,7 @@ RUN \
   [ ! -f /var/log/tvheadend.log ] && touch /var/log/tvheadend.log && \
   chmod 666 /var/log/tvheadend.log && \
   echo "**** set localtime to Amsterdam time ****" && \
-  cp /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime && \
+  cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
   echo "**** cleanup for root ****" && \
   rm -rf \
 		/tmp/* \

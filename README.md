@@ -8,7 +8,9 @@ TODO: add logo
 
 Latest release: 0.1 - docker-tvheadend - [Changelog](CHANGELOG.md)
 # jplorg/tvheadend
-[![](https://images.microbadger.com/badges/version/jplorg/tvheadend.svg)](https://microbadger.com/images/jplorg/tvheadend "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/jplorg/tvheadend.svg)](https://microbadger.com/images/jplorg/tvheadend "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/jplorg/tvheadend.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/jplorg/tvheadend.svg)][hub]
+[![](https://images.microbadger.com/badges/version/jplorg/tvheadend.svg)](https://microbadger.com/images/jplorg/tvheadend "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/jplorg/tvheadend.svg)](https://microbadger.com/images/jplorg/tvheadend "Get your own image badge on microbadger.com")
+[![Docker Pulls](https://img.shields.io/docker/pulls/jplorg/tvheadend.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/jplorg/tvheadend.svg)][hub]
 TODO: Add shippable and code quality status
 
 [![tvheadend](https://github.com/tvheadend/tvheadend/blob/master/src/webui/static/img/logomid.png)][appurl]
@@ -35,7 +37,7 @@ You can choose between ,using tags, latest (default, and no tag required or a sp
 
 #### Tags
 
-+ **release-1.0** : latest release from 4.2 branch. <Freshly built every friday night uk time.>
++ **latest** : latest release from official Tvheadend 4.2 branch.
 
 ## Donations
 Please consider donating a cup of coffee for the developer through paypal using the button below.
@@ -45,15 +47,20 @@ Please consider donating a cup of coffee for the developer through paypal using 
 ## Considerations
 
 * The container is based on Debian, using the tvheadend debian package. For shell access whilst the container is running do `docker exec -it tvheadend /bin/bash`.
+* The container will test whether the config file is available. If not it adds the arguments -C --noacl to the Tvheadend startup arguments.
+* Currently the container has been tested using [iptvstack](https://iptvstack.com/) for IP TV. Due to the lack of possessing DVB cards these have not been tested.
+* On Synology Docker (DSM 6 - kernel 3.10) for the first time (first run), using the Tvheadend wizard for configuration, the container freezes after about 2 - 4 hours without notification. The container runs without problems, even when run for the first time, using an existing configuration.
+* The comskip installation has not been tested yet!
+* Container local time is default set to Europe/Amsterdam. This can be changed using `-e TZ` (where TZ is eg Europe/Berlin).
 
 ## Usage
 
 **Parameters**
 
-`The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side. 
+The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side. 
 For example with a port -p external:internal - what this shows is the port mapping from internal to external of the container.
 So -p 8080:80 would expose port 80 from inside the container to be accessible from the host's IP on port 8080
-http://172.12.x.x:8080 would show you what's running INSIDE the container on port 80.`
+http://172.12.x.x:8080 would show you what's running INSIDE the container on port 80.
 
 * `-p 1234` - the port(s)
 * `-v /config` - Where TVHeadend show store it's config files
@@ -87,7 +94,7 @@ For advanced setup of tvheadend, go to [Tvheadend][appurl]
 **Configuring XMLTV grabber**
 
 To configure a XMLTV grabber, first check if the grabber is listed in Configuration --> Channel/EPG --> EPG Grabber Modules. If it's listed, configure the grabber before enabling.
-The WebGrab+Plus grabber is available in /usr/bin/tvgrab++. Use /epg or the location of guide.xml.
+The WebGrab+Plus grabber is available in /usr/bin/tvgrab++. Use /epg as the location of guide.xml.
 
 **Comskip**
 This container comes with Comskip for commercial flagging of recordings. This can be added in the recording config of tvheadend.
