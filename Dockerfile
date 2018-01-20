@@ -16,8 +16,6 @@ VOLUME /config /epg /recordings
 
 # Add sysctl due to network issue on synology docker
 ADD config/sysctl.conf /etc/sysctl.conf
-# Add sysctl due to network issue on synology docker
-#ADD config/superuser /tmp/superuser
 # Add etc/init.d/tvheadend replacement due to no udev
 ADD config/tvheadend /tmp/tvheadend
 
@@ -43,6 +41,7 @@ RUN \
   echo "deb https://dl.bintray.com/tvheadend/deb ${TVHEADEND_DIST} ${TVHEADEND_VER}" | tee -a /etc/apt/sources.list && \
   echo "**** install tvheadend ****" && \
   apt-get -y update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
+  	ffmpeg \
   	xmltv-util \
   	dvb-apps \
   	tvheadend && \
@@ -64,15 +63,11 @@ RUN \
 	./autogen.sh && \
 	./configure \
 	--bindir=/usr/bin \
-	--sysconfdir=${HOME}/config/comskip && \
+	--sysconfdir=/config/comskip && \
 	make && \
 	make install && \
 	echo "**** add hts user to group video and users ****" && \
 	usermod -a -G users hts && usermod -a -G video hts && \
-  #echo "**** set superuser for tvheadend for inital login ****" && \
-  #mkdir -p ${HOME}/.hts/tvheadend && \
-  #mv /tmp/superuser ${HOME}/.hts/tvheadend/ && \
-  #chown -R ${USR}:${GROUP} ${HOME}/.hts/ && \
   echo "**** replace /etc/init.d/tvheadend ****" && \
   mv /tmp/tvheadend /etc/init.d/tvheadend && \
   chmod 755 /etc/init.d/tvheadend && \

@@ -1,20 +1,19 @@
+[jplorgurl]: https://www.jp-l.org
 [appurl]: https://www.tvheadend.org/
-[hub]: https://hub.docker.com/r/linuxserver/tvheadend/
+[hub]: https://hub.docker.com/r/jplorg/tvheadend/
 
-# Tvheadend within a Docker container
+TODO: add logo
+
+[JP-L][jplorgurl] created a Tvheadend container featuring easy user mapping.
 
 Latest release: 0.1 - docker-tvheadend - [Changelog](CHANGELOG.md)
+# jplorg/tvheadend
+[![](https://images.microbadger.com/badges/version/jplorg/tvheadend.svg)](https://microbadger.com/images/jplorg/tvheadend "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/jplorg/tvheadend.svg)](https://microbadger.com/images/jplorg/tvheadend "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/jplorg/tvheadend.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/jplorg/tvheadend.svg)][hub]
+TODO: Add shippable and code quality status
 
-Running Tvheadend within a Docker container.
-
+[![tvheadend](https://github.com/tvheadend/tvheadend/blob/master/src/webui/static/img/logomid.png)][appurl]
 Tvheadend is a TV streaming server and recorder for Linux, FreeBSD and Android supporting DVB-S, DVB-S2, DVB-C, DVB-T, ATSC, ISDB-T, IPTV, SAT>IP and HDHomeRun as input sources.
 Multiple EPG sources are supported (over-the-air DVB and ATSC including OpenTV DVB extensions, XMLTV, PyXML). Visit (Tvheadend)[appurl] for more info.
-
-### Shippable CI Status
-TODO
-
-### Code Quality Status
-n.a.
 
 ## Quick Start
 
@@ -32,9 +31,7 @@ docker create \
 ```
 The --device=/dev/dvb is only needed if you want to pass through a DVB card to the container. If you use IPTV or HDHomeRun you can leave it out.
 
-You can choose between ,using tags, latest (default, and no tag required or a specific release branch of tvheadend.
-
-Add one of the tags, if required, to the jplorg/tvheadend line of the run/create command in the following format, jplorg/tvheadend:release-1.0
+You can choose between ,using tags, latest (default, and no tag required or a specific release branch of tvheadend. Add one of the tags, if required, to the jplorg/tvheadend line of the run/create command in the following format, jplorg/tvheadend:release-1.0
 
 #### Tags
 
@@ -47,69 +44,16 @@ Please consider donating a cup of coffee for the developer through paypal using 
 
 ## Considerations
 
-TODO
+* The container is based on Debian, using the tvheadend debian package. For shell access whilst the container is running do `docker exec -it tvheadend /bin/bash`.
 
 ## Usage
 
-**EPG XML file**
-
-If you have EPG data in XML format from a supplier, you can drop it in the epg folder of your volume mapping. If it doesn't exist, create it. Then choose the XML file grabber in Configuration --> Channel/EPG --> EPG Grabber Modules.
-If you use WebGrab+Plus, choose the WebGrab+Plus XML file grabber. The XML file goes in the same path as above.
-The xml file has to be named guide.xml.
-
-For advanced setup of tvheadend, go to [Tvheadend][appurl]
-
-
-
-
-## Changelog
-
-Please refer to: [CHANGELOG.md](CHANGELOG.md)
-
-***************************************************
-[linuxserverurl]: https://linuxserver.io
-[forumurl]: https://forum.linuxserver.io
-[ircurl]: https://www.linuxserver.io/irc/
-[podcasturl]: https://www.linuxserver.io/podcast/
-
-[![linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)][linuxserverurl]
-
-The [LinuxServer.io][linuxserverurl] team brings you another container release featuring easy user mapping and community support. Find us for support at:
-* [forum.linuxserver.io][forumurl]
-* [IRC][ircurl] on freenode at `#linuxserver.io`
-* [Podcast][podcasturl] covers everything to do with getting the most from your Linux Server plus a focus on all things Docker and containerisation!
-
-# linuxserver/tvheadend
-[![](https://images.microbadger.com/badges/version/linuxserver/tvheadend.svg)](https://microbadger.com/images/linuxserver/tvheadend "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/tvheadend.svg)](https://microbadger.com/images/linuxserver/tvheadend "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/tvheadend.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/tvheadend.svg)][hub][![Build Status](https://ci.linuxserver.io/buildStatus/icon?job=Docker-Builders/x86-64/x86-64-tvheadend)](https://ci.linuxserver.io/job/Docker-Builders/job/x86-64/job/x86-64-tvheadend/)
-
-
-
-[![tvheadend](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/tvheadend-big.png)][appurl]
-
-## Usage
-
-
-
-
-
-
-#### Tags
-
-+ **release-4.2** : latest release from 4.2 branch. Freshly built every friday night uk time.
-+ **stable-4.2.1** : old stable version. Will not be updated anymore!
-+ **stable-4.0.9** : old stable version. Will not be updated anymore!
-
-#### Host vs. Bridge
-
-If you use IPTV, SAT>IP or HDHomeRun, you need to create the container with --net=host and remove the -p flags. This is because of a limitation in docker and multicast.
-
-## Parameters
+**Parameters**
 
 `The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side. 
 For example with a port -p external:internal - what this shows is the port mapping from internal to external of the container.
 So -p 8080:80 would expose port 80 from inside the container to be accessible from the host's IP on port 8080
-http://192.168.x.x:8080 would show you what's running INSIDE the container on port 80.`
-
+http://172.12.x.x:8080 would show you what's running INSIDE the container on port 80.`
 
 * `-p 1234` - the port(s)
 * `-v /config` - Where TVHeadend show store it's config files
@@ -121,72 +65,43 @@ http://192.168.x.x:8080 would show you what's running INSIDE the container on po
 * `--net=host` - for IPTV, SAT>IP and HDHomeRun
 * `-e TZ` - for timezone information *eg Europe/London, etc*
 
-It is based on alpine linux with s6 overlay, for shell access whilst the container is running do `docker exec -it tvheadend /bin/bash`.
+**User / Group Identifiers**
 
-### User / Group Identifiers
+When using volumes (`-v` flags) permission issues arise between the host OS and the container. This can be avoided by specifying the user `PUID` and group `PGID`. 
+Ensure the volumes directories on the host are read/writable by the container user. The container user is hts which is part of the groups video and users.
 
-Sometimes when using data volumes (`-v` flags) permissions issues can arise between the host OS and the container. We avoid this issue by allowing you to specify the user `PUID` and group `PGID`. Ensure the data volume directory on the host is owned by the same user you specify and it will "just work" .
-
-In this instance `PUID=1001` and `PGID=1001`. To find yours use `id user` as below:
+In this instance `PUID=103` and `PGID=44`. To find yours use `id user` as below:
 
 ```
   $ id <dockeruser>
-    uid=1001(dockeruser) gid=1001(dockergroup) groups=1001(dockergroup)
+    uid=103(dockeruser) gid=44(dockergroup) groups=44(dockergroup)
 ```
+**EPG XML file**
 
-## Additional runtime parameters
+If you have EPG data in XML format from a supplier, you can drop it in the epg folder of your volume mapping. If it doesn't exist, create it. Then choose the XML file grabber in Configuration --> Channel/EPG --> EPG Grabber Modules.
+If you use WebGrab+Plus, choose the WebGrab+Plus XML file grabber. The XML file goes in the same path as above.
+The xml file has to be named guide.xml.
 
-In some cases it might be necessary to start tvheadend with additional parameters, for example to enable debugging or specify webroot for reverse proxy. Be sure to have the right parameters set, as adding the wrong once might lead to the container not starting correctly.
-
-
-## Setting up the application
-
-The setup depends if you run the one of the stable tags or use latest. Running latest is the easiest as it has a setup wizard.
-
-**Stable**
-
-First thing to do is to go to Configuration --> DVB Inputs --> TV adapters and add your LNB/switch info. Then create a new network in the Networks tab and set the correct pre-defined muxes and orbital position.
-Go back to the TV adapters tab and add the newly created network under universal LNB. Go back to the Networks tab and mark the network you created earlier and press the Force Scan button. Tvheadend will now scan the muxes for services.
-
-After the scan is done, head to the Services tab and find the services you want as channels, mark them, and press map services. They should now appear under Configuration --> Channel/EPG.
-
-**Latest**
-
-The first thing to do is to run the setup wizard. If it doesn't pop up at first login, you can find it in Configuration --> General --> Base and click Start Wizard. This will guide you to set up the basic parts of tvheadend.
+For advanced setup of tvheadend, go to [Tvheadend][appurl]
 
 **Configuring XMLTV grabber**
 
-To configure the XMLTV grabber, first check if your grabber is listed in Configuration --> Channel/EPG --> EPG Grabber Modules. If it's listed, you will have to configure the grabber before enabling.
-Find the path in the path field of your grabber. We will use the last part. It starts with tv_grab_. Add it after /usr/bin/ in the below command. There should be no space between Usr/bin/ and the part you added. 
-
-```
-docker exec -it -u abc tvheadend /usr/bin/for_you_to_fill_out --configure
-```
-
-Now follow the onscreen progress. If you get asked about cache, just accept the default. After you have configured your grabber, you can go back and enable your grabber.
-
-If you allready have a configuration file, you can add it in the .xmltv folder where you mapped the /config volume. If it's not created, create it.
+To configure a XMLTV grabber, first check if the grabber is listed in Configuration --> Channel/EPG --> EPG Grabber Modules. If it's listed, configure the grabber before enabling.
+The WebGrab+Plus grabber is available in /usr/bin/tvgrab++. Use /epg or the location of guide.xml.
 
 **Comskip**
-This container comes with Comskip for commercial flagging of recordings. This you have to add in the recording config of tvheadend.
+This container comes with Comskip for commercial flagging of recordings. This can be added in the recording config of tvheadend.
 Go to Configuration --> Recording. Change the view level to advanced in the top right corner, and add the below in the Post-processor command field.
 
 ```
 /usr/bin/comskip --ini=/config/comskip/comskip.ini "%f"
 ```
 
-Now comskip will run after each recording is finished. You will find comskip.ini in the comskip folder of your /config volume mapping. See the [Comskip](http://www.kaashoek.com/comskip/) homepage for tuning of the ini file.
-
+Now comskip will run after each recording is finished. The comskip.ini in located in the comskip folder of the /config volume mapping. See the [Comskip](http://www.kaashoek.com/comskip/) homepage for tuning of the ini file.
 
 **FFmpeg**
 
-FFmpeg is installed in /usr/bin/ in case you need to use it with pipe.
-
-
-**Picons**
-
-We have added all the picons from [picons.xyz](https://picons.xyz/) in the folder /picons. To enable the use of these picons, add the path to the Channel icon path in Configuration --> General --> Base.
-You need to enable minimum advanced view level to see the picons options.
+FFmpeg is installed in /usr/bin/ in case it is needed.
 
 ## Info
 
@@ -201,6 +116,11 @@ You need to enable minimum advanced view level to see the picons options.
 
 `docker inspect -f '{{ index .Config.Labels "build_version" }}' linuxserver/tvheadend`
 
+
 ## Versions
 
 + **xx.xx.xx:** Initial release.
+
+## Changelog
+
+Please refer to: [CHANGELOG.md](CHANGELOG.md)
