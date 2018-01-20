@@ -10,10 +10,12 @@ Latest release: 0.1 - docker-tvheadend - [Changelog](CHANGELOG.md)
 # jplorg/tvheadend
 [![](https://images.microbadger.com/badges/version/jplorg/tvheadend.svg)](https://microbadger.com/images/jplorg/tvheadend "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/jplorg/tvheadend.svg)](https://microbadger.com/images/jplorg/tvheadend "Get your own image badge on microbadger.com")
-[![Docker Pulls](https://img.shields.io/docker/pulls/jplorg/tvheadend.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/jplorg/tvheadend.svg)][hub]
+[![Docker Pulls](https://img.shields.io/docker/pulls/jplorg/tvheadend.svg)][hub]
+[![Docker Stars](https://img.shields.io/docker/stars/jplorg/tvheadend.svg)][hub]
 TODO: Add shippable and code quality status
 
 [![tvheadend](https://github.com/tvheadend/tvheadend/blob/master/src/webui/static/img/logomid.png)][appurl]
+
 Tvheadend is a TV streaming server and recorder for Linux, FreeBSD and Android supporting DVB-S, DVB-S2, DVB-C, DVB-T, ATSC, ISDB-T, IPTV, SAT>IP and HDHomeRun as input sources.
 Multiple EPG sources are supported (over-the-air DVB and ATSC including OpenTV DVB extensions, XMLTV, PyXML). Visit (Tvheadend)[appurl] for more info.
 
