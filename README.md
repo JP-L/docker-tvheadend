@@ -121,7 +121,7 @@ FFmpeg is installed in /usr/bin/ in case it is needed.
 
 * image version number
 
-`docker inspect -f '{{ index .Config.Labels "build_version" }}' linuxserver/tvheadend`
+`docker inspect -f '{{ index .Config.Labels "build_version" }}' jplorg/tvheadend`
 
 
 ## Versions
